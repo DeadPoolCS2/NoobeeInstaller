@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-function show_menu {
+show_menu() {
     clear
     echo "  _   _             ____            "
     echo " | \ | | ___   ___ | __ )  ___  ___ "
@@ -15,7 +15,7 @@ function show_menu {
     echo "2. Quit"
 }
 
-function install_theme {
+install_theme() {
     clear
     echo "  _   _             ____            "
     echo " | \ | | ___   ___ | __ )  ___  ___ "
@@ -25,10 +25,10 @@ function install_theme {
     echo "         *Made By Akila*            "
     echo "                                    "
     echo "Installing theme..."
-    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E sh -
     sudo apt install -y nodejs
     sudo npm i -g yarn
-    cd /var/www/pterodactyl
+    cd /var/www/pterodactyl || exit 1
     yarn
     cd 
     wget https://cdn.discordapp.com/attachments/1076876649250967562/1076879105938694144/Noobee_v1.zip && \
@@ -36,7 +36,7 @@ function install_theme {
     unzip -o Noobee_v1.zip -d temp_dir && \
     sudo cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/ && \
     sudo rm -rf temp_dir
-    cd /var/www/pterodactyl/
+    cd /var/www/pterodactyl/ || exit 1
     yarn build:production
     php artisan view:clear
     echo "Theme installation completed!"
