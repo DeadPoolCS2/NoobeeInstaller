@@ -25,22 +25,30 @@ install_theme() {
     echo "         *Made By Akila*            "
     echo "                                    "
     echo "Installing theme..."
-    curl -sL https://deb.nodesource.com/setup_16.x | sudo -E sh -
+    sudo apt update
+    sudo apt install -y curl dirmngr apt-transport-https lsb-release ca-certificates
+    curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/nodesource.gpg add -
+    VERSION=node_16.x
+    DISTRO="$(lsb_release -s -c)"
+    echo "deb https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+    echo "deb-src https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
+    sudo apt update
     sudo apt install -y nodejs
     sudo npm i -g yarn
-    cd /var/www/pterodactyl || exit 1
-    yarn
-    cd 
-    wget https://cdn.discordapp.com/attachments/1076876649250967562/1076879105938694144/Noobee_v1.zip && \
-    sudo apt install -y unzip && \
-    unzip -o Noobee_v1.zip -d temp_dir && \
-    sudo cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/ && \
-    sudo rm -rf temp_dir
-    cd /var/www/pterodactyl/ || exit 1
-    yarn build:production
-    php artisan view:clear
-    echo "Theme installation completed!"
-    sleep 2
+    cd /var/www/pterodactyl && {
+        yarn
+        cd ..
+        wget https://cdn.discordapp.com/attachments/1076876649250967562/1076879105938694144/Noobee_v1.zip &&
+        sudo apt install -y unzip &&
+        unzip -o Noobee_v1.zip -d temp_dir &&
+        sudo cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/ &&
+        sudo rm -rf temp_dir &&
+        cd /var/www/pterodactyl || return 1
+        yarn build:production
+        php artisan view:clear
+        echo "Theme installation completed!"
+        sleep 2
+    }
 }
 
 show_menu
