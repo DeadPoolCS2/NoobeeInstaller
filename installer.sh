@@ -1,6 +1,6 @@
 #!/bin/sh
 
-show_menu() {
+print_header() {
     clear
     echo "  _   _             ____            "
     echo " | \ | | ___   ___ | __ )  ___  ___ "
@@ -9,6 +9,10 @@ show_menu() {
     echo " |_| \_|\___/ \___/|____/ \___|\___|"
     echo "         *Made By Akila*            "
     echo "                                    "
+}
+
+show_menu() {
+    print_header
     echo "Welcome to the NooBee Theme Installer!"
     echo "Please select an option:"
     echo "1. Install Theme (Must have a fresh Panel Install)"
@@ -16,14 +20,7 @@ show_menu() {
 }
 
 install_theme() {
-    clear
-    echo "  _   _             ____            "
-    echo " | \ | | ___   ___ | __ )  ___  ___ "
-    echo " |  \| |/ _ \ / _ \|  _ \ / _ \/ _ \\"
-    echo " | |\  | (_) | (_) | |_) |  __/  __/"
-    echo " |_| \_|\___/ \___/|____/ \___|\___|"
-    echo "         *Made By Akila*            "
-    echo "                                    "
+    print_header
     echo "Installing theme..."
     sudo apt update
     sudo apt install -y curl dirmngr apt-transport-https lsb-release ca-certificates
@@ -35,20 +32,21 @@ install_theme() {
     sudo apt update
     sudo apt install -y nodejs
     sudo npm i -g yarn
-    cd /var/www/pterodactyl && {
+    (
+        cd /var/www/pterodactyl || return 1
         yarn
         cd ..
-        wget https://cdn.discordapp.com/attachments/1076876649250967562/1076879105938694144/Noobee_v1.zip?ex=661bedd2&is=660978d2&hm=859b5ea084865ca8dce240403899a820866c6b1b57592fae5b0ee5961c442c82& &&
-        sudo apt install -y unzip &&
-        unzip -o Noobee_v1.zip -d temp_dir &&
-        sudo cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/ &&
-        sudo rm -rf temp_dir &&
+        wget -O Noobee_v1.zip https://cdn.discordapp.com/attachments/1076876649250967562/1076879105938694144/Noobee_v1.zip?ex=661bedd2&is=660978d2&hm=859b5ea084865ca8dce240403899a820866c6b1b57592fae5b0ee5961c442c82&
+        sudo apt install -y unzip
+        unzip -o Noobee_v1.zip -d temp_dir
+        sudo cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/
+        sudo rm -rf temp_dir
         cd /var/www/pterodactyl || return 1
         yarn build:production
         php artisan view:clear
         echo "Theme installation completed!"
         sleep 2
-    }
+    )
 }
 
 show_menu
