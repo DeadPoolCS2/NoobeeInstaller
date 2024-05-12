@@ -36,7 +36,7 @@ install_theme() {
         cd /var/www/pterodactyl || return 1
         yarn
         cd ..
-        wget -O Noobee_v1.zip https://cdn.discordapp.com/attachments/1076876649250967562/1076879105938694144/Noobee_v1.zip?ex=6640d7d2&is=663f8652&hm=ede4daae6d82941d14cffba52957583ab88a0bc109148747b12aed8ba3d0c016&
+        wget -O Noobee_v1.zip https://akila.network/noobee/Noobee_v1.zip
         sudo apt install -y unzip
         unzip -o Noobee_v1.zip -d temp_dir
         sudo cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/
