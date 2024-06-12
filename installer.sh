@@ -1,7 +1,6 @@
 #!/bin/sh
 
 print_header() {
-    clear
     echo "  _   _             ____            "
     echo " | \ | | ___   ___ | __ )  ___  ___ "
     echo " |  \| |/ _ \ / _ \|  _ \ / _ \/ _ \\"
