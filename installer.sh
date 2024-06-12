@@ -22,25 +22,25 @@ show_menu() {
 install_theme() {
     print_header
     echo "Installing theme..."
-    sudo apt update
-    sudo apt install -y curl dirmngr apt-transport-https lsb-release ca-certificates
-    curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key --keyring /etc/apt/trusted.gpg.d/nodesource.gpg add -
+    apt update
+    apt install -y curl dirmngr apt-transport-https lsb-release ca-certificates
+    curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key --keyring /etc/apt/trusted.gpg.d/nodesource.gpg add -
     VERSION=node_16.x
     DISTRO="$(lsb_release -s -c)"
-    echo "deb https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-    echo "deb-src https://deb.nodesource.com/$VERSION $DISTRO main" | sudo tee -a /etc/apt/sources.list.d/nodesource.list
-    sudo apt update
-    sudo apt install -y nodejs
-    sudo npm i -g yarn
+    echo "deb https://deb.nodesource.com/$VERSION $DISTRO main" | tee /etc/apt/sources.list.d/nodesource.list
+    echo "deb-src https://deb.nodesource.com/$VERSION $DISTRO main" | tee -a /etc/apt/sources.list.d/nodesource.list
+    apt update
+    apt install -y nodejs
+    npm i -g yarn
     (
         cd /var/www/pterodactyl || return 1
         yarn
         cd ..
         wget -O Noobee_v1.zip https://akila.network/noobee/Noobee_v1.zip
-        sudo apt install -y unzip
+        apt install -y unzip
         unzip -o Noobee_v1.zip -d temp_dir
-        sudo cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/
-        sudo rm -rf temp_dir
+        cp -r -f temp_dir/pterodactyl/. /var/www/pterodactyl/
+        rm -rf temp_dir
         cd /var/www/pterodactyl || return 1
         yarn build:production
         php artisan view:clear
